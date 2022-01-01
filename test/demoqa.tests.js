@@ -36,8 +36,8 @@ describe('DemoQA tests', function() {
     });
 
     it('Opens Text Box page,fills the form and submits', async function() {
-        const textBox = await driver.findElement(By.id('item-0'));
-        await textBox.click();
+        const textBoxBttn = await driver.findElement(By.id('item-0'));
+        await textBoxBttn.click();
 
         expect(await driver.findElement(By.className('main-header')).getText()).to.eq('Text Box');
 
@@ -66,9 +66,9 @@ describe('DemoQA tests', function() {
     });
 
     it('Open Check Box and check a field Documents', async function() {
-        const checkBox=await driver.findElement
+        const checkBoxBttn=await driver.findElement
         (By.xpath('//span[@class="text" and contains(., "Check Box")]'));
-        checkBox.click();
+        checkBoxBttn.click();
 
         expect(await driver.findElement(By.className('main-header')).getText()).to.eq('Check Box');
 
@@ -85,5 +85,63 @@ describe('DemoQA tests', function() {
             
             expect(await driver.findElement(By.id('result')).getText()).to.contain('You have selected');
     });
+
+    it('Opens Radio Button and checks Impressive', async function() {
+        const radioBttn= await driver.findElement
+        (By.xpath('//span[@class="text" and contains(.,"Radio Button")]'));
+        await radioBttn.click();
+
+        expect(await driver.getCurrentUrl()).to.eq('https://demoqa.com/radio-button');
+
+        const impressiveBttn= await driver.findElement(By.id('impressiveRadio'));
+        await impressiveBttn.click();
+
+        expect(await driver.findElement(By.css('p')).getText()).to.contain('You have selected');
+    });
+
+    it('Tests Web Tables', async function() {
+        const webTableBttn= await driver.findElement
+        (By.xpath('//span[@class="text" and contains(.,"Web Tables")]'));
+        await webTableBttn.click();
+
+        expect(await driver.findElement(By.className('main-header')).getText()).to.eq('Web Tables');
+
+        const addBttn= await driver.findElement(By.id('addNewRecordButton'));
+        await addBttn.click();
+
+        expect(await driver.findElement(By.id('id="registration-form-modal"')));
+
+        const firstName='Maja';
+        const lastName='Ninkovic';
+        const email='email.address@email.com';
+        const age='25';
+        const salary='120000';
+        const department='Education';
+
+        const fillFirstName= await driver.findElement(By.id('firstName'));
+        fillFirstName.sendKeys(firstName);
+
+        const fillLastName= await driver.findElement(By.id('lastName'));
+        fillLastName.sendKeys(lastName);
+
+        const fillEmail= await driver.findElement(By.id('userEmail'));
+        fillEmail.sendKeys(email);
+
+        const fillAge= await driver.findElement(By.id('age'));
+        fillAge.sendKeys(age);
+
+        const fillSalary=await driver.findElement(By.id('salary'));
+        fillSalary.sendKeys(salary);
+
+        const fillDpt=await driver.findElement(By.id('department'));
+        fillDpt.sendKeys(department);
+
+        const submitButton= await driver.findElement(By.id('submit'));
+        submitButton.click();
+
+        expect(await driver.findElement(By.xpath('//div[@role="gridcell"][5]')).getText()).to.eq(salary);
+        
+        
+    })
 
 })
