@@ -9,7 +9,7 @@ describe('DemoQA tests', function() {
     let driver;
 
     before(async function() {
-        let service = new chrome.ServiceBuilder('C:\\Users\\User\\QAKurs\\Chrome Driver\\chromedriver.exe').build()
+        let service = new chrome.ServiceBuilder('C:\\Users\\Korisnik\\Kurs\\Chrome Driver\\chromedriver.exe').build()
         chrome.setDefaultService(service);
 
         driver = await new Builder().forBrowser('chrome').build();
@@ -36,7 +36,7 @@ describe('DemoQA tests', function() {
     });
 
     it('Opens Text Box page,fills the form and submits', async function() {
-        const textBox = await driver.findElement(By.id('item-o'));
+        const textBox = await driver.findElement(By.id('item-0'));
         await textBox.click();
 
         expect(await driver.findElement(By.className('main-header')).getText()).to.eq('Text Box');
@@ -46,8 +46,44 @@ describe('DemoQA tests', function() {
         const fillCurrentAddress= 'Funny rd. 34';
         const fillPermanentAddress= 'Funny rd. 34';
 
-        const fullName= await driver.findElement()
+        const fullName= await driver.findElement(By.id('userName'));
+        fullName.sendKeys(fillUserName);
 
+        const email = await driver.findElement(By.id('userEmail'));
+        email.sendKeys(fillUserEmail);
+
+        const currAddress = await driver.findElement(By.id('currentAddress'));
+        currAddress.sendKeys(fillCurrentAddress);
+
+        const perAddress = await driver.findElement(By.id('permanentAddress'));
+        perAddress.sendKeys(fillPermanentAddress);
+
+        const submitBttn= await driver.findElement(By.id('submit'));
+        submitBttn.click();
+
+        expect(await driver.findElement(By.id('output')));
+
+    });
+
+    it('Open Check Box and check a field Documents', async function() {
+        const checkBox=await driver.findElement
+        (By.xpath('//span[@class="text" and contains(., "Check Box")]'));
+        checkBox.click();
+
+        expect(await driver.findElement(By.className('main-header')).getText()).to.eq('Check Box');
+
+        const expandAll= await driver.findElement
+        (By.className('rct-icon rct-icon-expand-all'));
+
+        await expandAll.click();
+
+        expect(await driver.findElement
+            (By.xpath('//span[@class="rct-title" and contains(.,"Documents")]')));
+
+        const checkField= await driver.findElement(By.className('rct-checkbox'));
+            await checkField.click();
+            
+            expect(await driver.findElement(By.id('result')).getText()).to.contain('You have selected');
     });
 
 })
