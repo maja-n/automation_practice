@@ -99,6 +99,24 @@ describe('DemoQA tests', function() {
         expect(await driver.findElement(By.css('p')).getText()).to.contain('You have selected');
     });
 
+    it('Tests dynamic properties', async function() {
+        const dynProperties= await driver.findElement(By.id('item-8'));
+        await dynProperties.click();
+
+        expect(await driver.getCurrentUrl()).to.eq('https://demoqa.com/dynamic-properties');
+
+        const buttonEnabledAfter= await driver.findElement(By.id('enableAfter'));
+        await driver.wait(until.elementIsEnabled(buttonEnabledAfter));
+
+        expect(await buttonEnabledAfter.isEnabled()).to.eq(true);
+
+        const buttonVisibleAfter= await driver.findElement(By.id('visibleAfter'));
+        await driver.wait(until.elementIsVisible(buttonVisibleAfter));
+        
+        expect(await buttonVisibleAfter.isDisplayed()).to.eq(true);
+
+    });
+
     it('Tests Web Tables', async function() {
         const webTableBttn= await driver.findElement
         (By.xpath('//span[@class="text" and contains(.,"Web Tables")]'));
@@ -109,7 +127,7 @@ describe('DemoQA tests', function() {
         const addBttn= await driver.findElement(By.id('addNewRecordButton'));
         await addBttn.click();
 
-        expect(await driver.findElement(By.id('id="registration-form-modal"')));
+        expect(await driver.findElement(By.id('registration-form-modal')));
 
         const firstName='Maja';
         const lastName='Ninkovic';
